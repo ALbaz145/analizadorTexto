@@ -16,7 +16,7 @@ services:
     build: ./backend
     ports:
       - "8000:8000"
-    enviroment:
+    environment:
       - REDIS_ULR=redis://redis:6379
     depends_on:
       redis:
@@ -25,7 +25,7 @@ services:
 
   worker1:
     build: ./worker
-    enviroment:
+    environment:
       - REDIS_ULR=redis://redis:6379
       - WORKER_ID=worker1
     depends_on:
@@ -35,7 +35,7 @@ services:
 
   worker2:
     build: ./worker
-    enviroment:
+    environment:
       - REDIS_ULR=redis://redis:6379
       - WORKER_ID=worker2
     depends_on:
@@ -45,7 +45,7 @@ services:
 
   worker3:
     build: ./worker
-    enviroment:
+    environment:
       - REDIS_ULR=redis://redis:6379
       - WORKER_ID=worker3
     depends_on:

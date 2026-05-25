@@ -6,7 +6,7 @@ from collections import Counter
 from datetime import datetime
 import redis
 
-REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
+REDIS_URL = os.getenv("REDIS_URL", "redis://redis:6379")
 WORKER_ID = os.getenv("WORKER_ID", "worker-unknown")
 
 r = redis.from_url(REDIS_URL, decode_responses=True)
@@ -77,31 +77,29 @@ def heartbeat(status = "idle", task_id=None):
         "task_id": task_id,
         "last_seen": datetime.utcnow().isoformat(),
     }
-    r.setex(f"worker:{WORKER_ID}", json.dumps(payload), 10)
+    r.setex(f"worker:{WORKER_ID}", 10, json.dumps(payload))
 
-    print(f"[{WORKER_ID}] Listo para procesar tareas...")
+print(f"[{WORKER_ID}] Listo para procesar tareas...")
 
-    while True:
-        heartbeat("idle")
-        result = r.blpop("tasks:queue", timeout=3)
+while True:
+    heartbeat("idle")
+    result = r.brpop("task_queue", timeout=3)
 
-        if result is None:
-            continue
+    if result is None:
+        continue
 
-        _, raw_task = result
-        task = json.loads(raw_task)
-        task_id = task["task_id"]
-        text = task["text"]
-
-        print(f"[{WORKER_ID}] Tomando tarea {task_id}...")
-        heartbeat("busy", task_id)
-        update_task(task_id, "en progreso")
-
-        try:
-            time.sleep(2)
-            analysis = analyze_text(text)
-            update_task(task_id, "completada", result=analysis)
-            print(f"[{WORKER_ID}] Tarea {task_id} completada.")
-        except Exception as e:
-            update_task(task_id, "error", error=str(e))
-            print(f"[{WORKER_ID}] Error en tarea {task_id}: {e}")
+    _, raw_task = result
+    task = json.loads(raw_task)
+    task_id = task["task_id"]
+    text = task["text"]
+    print(f"[{WORKER_ID}] Tomando tarea {task_id}...")
+    heartbeat("busy", task_id)
+    update_task(task_id, "en progreso")
+    try:
+        time.sleep(2)
+        analysis = analyze_text(text)
+        update_task(task_id, "completada", result=analysis)
+        print(f"[{WORKER_ID}] Tarea {task_id} completada.")
+    except Exception as e:
+        update_task(task_id, "error", error=str(e))
+        print(f"[{WORKER_ID}] Error en tarea {task_id}: {e}")
