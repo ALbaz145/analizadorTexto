@@ -18,7 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-REDIS_URL = "redis://localhost:6379"
+REDIS_URL = "redis://redis:6379"
 
 class TextTask(BaseModel):
     text: str
@@ -42,7 +42,7 @@ async def create_task(payload: TextTask):
     await r.aclose()
     return {"task_id": task_id, "status": "pendiente"}
 
-@app.get("/task/{task_id}")
+@app.get("/status/{task_id}")
 async def task_status_sse(task_id: str):
     async def event_stream():
         r = await aioredis.from_url(REDIS_URL)
