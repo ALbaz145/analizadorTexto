@@ -55,3 +55,53 @@ def analyze_text(text: str) -> dict:
         "sentiment": sentiment,
         "summary": summary,
     }
+
+def update_task(task_id: str, status: str, result=None, error=None):
+    raw = r.get(f"task:{task_id}")
+    if not raw:
+        return
+    data = json.loads(raw)
+    data["status"] = status
+    data["worker_id"] = WORKER_ID
+    data["updated_at"] = datetime.utcnow().isoformat()
+    if result:
+        data["result"] = result
+    if error:
+        data["error"] = error
+    r.set(f"task:{task_id}", json.dumps(data))
+
+def heartbeat(status = "idle", task_id=None):
+    payload = {
+        "worker_id": WORKER_ID,
+        "status": status,
+        "task_id": task_id,
+        "last_seen": datetime.utcnow().isoformat(),
+    }
+    r.setex(f"worker:{WORKER_ID}", json.dumps(payload), 10)
+
+    print(f"[{WORKER_ID}] Listo para procesar tareas...")
+
+    while True:
+        heartbeat("idle")
+        result = r.blpop("tasks:queue", timeout=3)
+
+        if result is None:
+            continue
+
+        _, raw_task = result
+        task = json.loads(raw_task)
+        task_id = task["task_id"]
+        text = task["text"]
+
+        print(f"[{WORKER_ID}] Tomando tarea {task_id}...")
+        heartbeat("busy", task_id)
+        update_task(task_id, "en progreso")
+
+        try:
+            time.sleep(2)
+            analysis = analyze_text(text)
+            update_task(task_id, "completada", result=analysis)
+            print(f"[{WORKER_ID}] Tarea {task_id} completada.")
+        except Exception as e:
+            update_task(task_id, "error", error=str(e))
+            print(f"[{WORKER_ID}] Error en tarea {task_id}: {e}")
