@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analizador de Texto - Cloud Native</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>☁️ Analizador de Texto ☁️  </h1>
+        <p>Procesamiento distribuido con FastAPI, Redis y Docker Workers</p>
+    </header>
+
+    <main class="dashboard-container">
+        <section class="panel main-panel">
+            <h2>Analizar Nuevo Texto</h2>
+            <textarea id="text-input" placeholder="Escribe o pega tu texto aquí para contar palabras, clasificar por tema y analizar el modo..."></textarea>
+            <button id="btn-analizar"> Enviar a la Cola</button>
+
+            <div id="status-card" class="status-card status-hidden">
+                <h3>Estado de la Tarea: <span id="status-text">-</span></h3>
+                <div id="spinner" class="spinner hidden"></div>
+                <div id="results-box" class="results-box hidden">
+                    <h4> Resultados del Análisis:</h4>
+                    <div id="results-content"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel side-panel">
+            <div class="monitor-section">
+                <h2> 💡 Workers Activos Docker </h2>
+                <ul id="workers-list" class="monitor-list">
+                    <li class="loading-text">Buscando workers...</li>
+                </ul>
+            </div>
+
+            <div class="history-section">
+                <h2>📜 Historial de Tareas Local</h2>
+                <ul id="history-list" class="monitor-list"></ul>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

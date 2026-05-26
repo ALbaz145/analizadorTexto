@@ -1,0 +1,234 @@
+:root {
+    --bg-main: #0b0d19;        /* Azul muy oscuro para el fondo general */
+    --bg-panel: #131730;       /* Azul marino profundo para las tarjetas */
+    --border-color: #262b51;   /* Azul medio para los bordes */
+    --text-main: #f1f5f9;      /* Blanco grisáceo para textos principales */
+    --text-muted: #6b7280;     /* Gris para textos secundarios */
+    
+    /* Tonos Morados y Azules Eléctricos */
+    --neon-blue: #00f2fe;      /* Azul neón para resaltar */
+    --purple-primary: #7c3aed; /* Morado base */
+    --purple-glow: #a78bfa;    /* Morado claro para efectos */
+    --purple-hover: #6d28d9;   /* Morado oscuro para botones activos */
+    
+    /* Estados del Proceso [cite: 15] */
+    --status-pending: #f59e0b;  /* Amarillo [cite: 16] */
+    --status-process: #00f2fe;  /* Azul Neón [cite: 18] */
+    --status-success: #10b981;  /* Verde [cite: 19] */
+    --status-error: #ef4444;    /* Rojo [cite: 20] */
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+}
+
+header {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    background: linear-gradient(180deg, #1e1145 0%, #0b0d19 100%); /* Degradado morado a azul oscuro */
+    border-bottom: 2px solid var(--border-color);
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.15); /* Brillo morado sutil */
+}
+
+header h1 { 
+    margin: 0; 
+    font-size: 2.2rem; 
+    letter-spacing: 1px;
+    background: linear-gradient(90deg, var(--neon-blue), var(--purple-glow));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+header p { 
+    margin: 0.7rem 0 0; 
+    color: #94a3b8; 
+    font-size: 1rem;
+}
+
+.dashboard-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    max-width: 1250px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+@media (max-width: 900px) {
+    .dashboard-container { grid-template-columns: 1fr; }
+}
+
+.panel {
+    background-color: var(--bg-panel);
+    border-radius: 16px;
+    padding: 1.8rem;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-color);
+}
+
+.panel h2 {
+    font-size: 1.3rem;
+    margin-top: 0;
+    margin-bottom: 1.2rem;
+    color: var(--purple-glow);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+textarea {
+    width: 100%;
+    height: 180px;
+    background-color: #070913;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-main);
+    padding: 1.2rem;
+    box-sizing: border-box;
+    resize: vertical;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+textarea:focus { 
+    outline: none; 
+    border-color: var(--purple-primary); 
+    box-shadow: 0 0 10px rgba(124, 58, 237, 0.4);
+}
+
+button {
+    width: 100%;
+    background: linear-gradient(90deg, var(--purple-primary), #4f46e5);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 1.2rem;
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+    transition: all 0.2s ease;
+}
+
+button:hover { 
+    background: linear-gradient(90deg, var(--purple-hover), #4338ca);
+    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
+    transform: translateY(-1px);
+}
+
+button:disabled {
+    background: #2e3558;
+    color: var(--text-muted);
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* CARDS DE ESTADO CON BORDES DE NEÓN [cite: 15] */
+.status-card {
+    margin-top: 1.8rem;
+    padding: 1.2rem;
+    border-radius: 10px;
+    border-left: 6px solid var(--border-color);
+    background-color: #090b16;
+    transition: all 0.4s ease;
+}
+
+.status-hidden { display: none; }
+.status-pendiente { border-color: var(--status-pending); box-shadow: inset 5px 0 10px rgba(245, 158, 11, 0.05); }
+.status-proceso { border-color: var(--status-process); box-shadow: inset 5px 0 10px rgba(0, 242, 254, 0.05); }
+.status-completada { border-color: var(--status-success); box-shadow: inset 5px 0 10px rgba(16, 185, 129, 0.05); }
+.status-error { border-color: var(--status-error); box-shadow: inset 5px 0 10px rgba(239, 68, 68, 0.05); }
+
+/* SPINNER DE CARGA ELÉCTRICO (ANIMACIÓN)  */
+.spinner {
+    width: 35px;
+    height: 35px;
+    border: 4px solid rgba(0, 242, 254, 0.1);
+    border-top-color: var(--neon-blue);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 1.5rem auto;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ANIMACIÓN INTERMITENTE PARA EL TEXTO (ANIMACIÓN)  */
+.pulse {
+    animation: blink 1.8s infinite ease-in-out;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; text-shadow: 0 0 8px rgba(0, 242, 254, 0.6); }
+    50% { opacity: 0.4; text-shadow: none; }
+}
+
+/* CONTENEDOR DE RESULTADOS */
+.results-box {
+    margin-top: 1.2rem;
+    background: #181d3a;
+    padding: 1.2rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    animation: fadeIn 0.4s ease-out; /* Efecto suave al aparecer  */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.result-item {
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.95rem;
+}
+.result-item:last-child { border-bottom: none; }
+.result-item strong { color: var(--neon-blue); }
+
+/* LISTAS DE MONITOREO (WORKERS E HISTORIAL) [cite: 70, 76] */
+.monitor-section, .history-section { margin-bottom: 2rem; }
+
+.monitor-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.monitor-list li {
+    background-color: #070913;
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.6rem;
+    font-size: 0.9rem;
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s ease;
+}
+
+.monitor-list li:hover {
+    transform: translateX(3px);
+    border-color: rgba(124, 58, 237, 0.5);
+}
+
+/* BADGE DE TRABAJO (DASHBOARD WORKERS) [cite: 76] */
+.worker-badge {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    margin-right: 8px;
+    box-shadow: 0 0 8px currentColor;
+}
+.worker-online { color: var(--status-success); background-color: var(--status-success); }
+
+/* Scrollbars personalizadas para combinar con el estilo */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-main); }
+::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--purple-primary); }
