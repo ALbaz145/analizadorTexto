@@ -17,7 +17,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - REDIS_ULR=redis://redis:6379
+      - REDIS_URL=redis://redis:6379
     depends_on:
       redis:
         condition: service_healthy
@@ -33,7 +33,7 @@ services:
   worker1:
     build: ./worker
     environment:
-      - REDIS_ULR=redis://redis:6379
+      - REDIS_URL=redis://redis:6379
       - WORKER_ID=worker1
     depends_on:
       redis:
@@ -43,7 +43,7 @@ services:
   worker2:
     build: ./worker
     environment:
-      - REDIS_ULR=redis://redis:6379
+      - REDIS_URL=redis://redis:6379
       - WORKER_ID=worker2
     depends_on:
       redis:
@@ -53,7 +53,7 @@ services:
   worker3:
     build: ./worker
     environment:
-      - REDIS_ULR=redis://redis:6379
+      - REDIS_URL=redis://redis:6379
       - WORKER_ID=worker3
     depends_on:
       redis:
