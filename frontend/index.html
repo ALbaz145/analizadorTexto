@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Analizador de Texto</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>Analizador de Texto</h1>
+      <p>Envío de tareas a workers y actualización por SSE.</p>
+    </header>
+
+    <section class="panel">
+      <h2>Nueva tarea</h2>
+      <textarea id="text" rows="8" placeholder="Escribir o pegar texto..."></textarea>
+      <div class="row">
+        <button id="btnSend">Analizar</button>
+        <span id="msg" class="muted"></span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="panel">
+        <h2>Workers</h2>
+        <div id="workers" class="list"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Tareas</h2>
+        <div id="tasks" class="list"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>
