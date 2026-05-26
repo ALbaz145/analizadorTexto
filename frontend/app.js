@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:18000";
+const API_BASE = "http://localhost:8000";
 const $ = (id) => document.getElementById(id);
 
 async function fetchJSON(url, opts) {
@@ -6,6 +6,13 @@ async function fetchJSON(url, opts) {
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return await res.json();
 }
+
+function updateClock() {
+  document.getElementById("clock").textContent =
+    new Date().toLocaleTimeString("es-MX", { hour12: false });
+}
+setInterval(updateClock, 1000);
+updateClock();
 
 function upsertTask(task) {
   const box = $("tasks");

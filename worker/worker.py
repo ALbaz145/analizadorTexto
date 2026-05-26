@@ -12,9 +12,19 @@ WORKER_ID = os.getenv("WORKER_ID", "worker-unknown")
 r = redis.from_url(REDIS_URL, decode_responses=True)
 
 STOPWORDS = {
-    "el", "la", "los", "las", "un","una", "unos", "unas", "y", "o", "pero", 
-    "si", "mientras", "con", "a", "de", "en", "por", "es", "son", "fue", 
-    "fueron", "ser", "sido","este", "esa", "estos", "esas"
+    "a","acá","ahí","al","algo","algunas","algunos","allá","allí","ambos","ante","antes","aquel","aquella","aquellas",
+    "aquello","aquellos","aqui","aquí","arriba","asi","atras","aun","aunque","bajo","bastante","bien","cada","casi",
+    "como","cómo","con","conmigo","consigo","consigue","consiguen","consigues","contigo","contra","cual",
+    "cuales","cualquier","cuando","cuanto","de","del","desde","donde","dos","el","él","ella","ellas","ello","ellos",
+    "en","encima","entonces","entre","era","eramos","eran","eras","eres","es","esa","esas","ese","eso","esos","esta",
+    "estado","estais","estamos","estan","estar","estas","este","esto","estos","estoy","etc","fue","fueron","fui","fuimos",
+    "ha","hace","hacen","hacer","hacia","hasta","incluso","intenta","ir","jamás","junto","la","las","lo","los","mas","más",
+    "me","menos","mi","mis","misma","mismas","mismo","mismos","mucha","muchas","mucho","muchos","muy","nada","ni","ningun",
+    "ninguna","ningunas","ninguno","ningunos","no","nos","nosotras","nosotros","nuestra","nuestras","nuestro","nuestros",
+    "nunca","os","otra","otras","otro","otros","para","pero","poca","pocas","poco","pocos","por","porque","puede","pueden",
+    "puedo","pues","que","qué","quien","quienes","quizas","quizá","se","segun","ser","si","sí","siempre","sin","sobre","solo",
+    "somos","soy","su","sus","también","tener","tengo","ti","tiene","tienen","toda","todas","todavia","todavía","todo","todos",
+    "tras","tu","tú","tus","un","una","unas","uno","unos","usted","ustedes","va","vamos","van","varias","varios","voy","yo"
 }
 
 def analyze_text(text: str) -> dict:
