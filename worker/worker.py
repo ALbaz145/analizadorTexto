@@ -48,8 +48,26 @@ def analyze_text(text: str) -> dict:
     }
     detected = [cat for cat, kws in categories.items() if any(w in text.lower() for w in kws)]
 
-    positive = {"bueno", "excelente", "maravilloso", "positivo", "feliz", "genial", "fantástico", "agradable"}
-    negative = {"malo", "terrible", "horrible", "negativo", "triste", "deprimente", "desagradable"}
+    positive = {
+        "excelente","increíble","genial","fantástico","maravilloso","perfecto","agradable","feliz","contento",
+        "encantado","satisfecho","emocionante","positivo","eficiente","rápido","útil","recomendado","confiable",
+        "amable","brillante","impresionante","bonito","hermoso","espectacular","fabuloso","magnífico","sobresaliente",
+        "inspirador","agradable","divertido","innovador","creativo","inteligente","amigable","accesible","seguro","estable",
+        "potente","práctico","cómodo","económico","valioso","exitoso","favorable","optimista","motivado","respetuoso","honesto",
+        "eficaz","calidad","limpio","organizado","rápida","agradó","encanta","amo","adoro","disfruto","aprobado","genialidad",
+        "sorprendente","destacado","admirable","talentoso","competente","funcional","fluido","reliable","premium","extraordinario",
+        "excelso","agradablemente","eficientemente","bien","mejor","mejora","perfectamente","recomendable","agradables","positiva",
+        "positivas","positivos"
+    }
+    negative = {
+        "malo","terrible","horrible","pésimo","defectuoso","lento","decepcionante","feo","inútil","problemático","caro","molesto",
+        "odio","frustrante","incorrecto","falló","dañado","negativo","triste","enojado","desastroso","aburrido","ridículo","inaceptable",
+        "insuficiente","mediocre","complicado","confuso","deficiente","inestable","pobre","agresivo","desagradable","hostil","irritante",
+        "molestia","basura","fraude","engaño","falso","mentira","odioso","detestable","lamentable","vergonzoso","patético","inservible",
+        "débil","pesado","sucio","roto","fallando","terriblemente","desordenado","alarmante","peligroso","grave","crítico","error","errores",
+        "falla","fallas","bug","bugs","crash","bloqueado","corrupto","spam","tóxico","violento","ofensivo","amargo","deprimente","desmotivado",
+        "estresante","cancelado","rechazado","peor","fatal","mal","negativa","negativas","negativos"
+    }
     pos = sum(1 for w in words if w in positive)
     neg = sum(1 for w in words if w in negative)
     sentiment = "positivo" if pos > neg else "negativo" if neg > pos else "neutral"
