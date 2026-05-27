@@ -1,7 +1,8 @@
 import asyncio
 import json
 import uuid
-from datetime import datetime
+import os
+from datetime import datetime, timezone
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -18,7 +19,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-REDIS_URL = "redis://redis:6379"
+REDIS_URL = os.getenv("REDIS_URL", "redis://redis:6379")
 
 class TextTask(BaseModel):
     text: str
@@ -32,7 +33,7 @@ async def create_task(payload: TextTask):
         "task_id": task_id,
         "text": payload.text,
         "status": "pendiente",
-        "created_at": datetime.utcnow().isoformat(),
+        "created_at": datetime.now(timezone.utc).isoformat(),
         "worker_id": None,
         "result": None,
     }
