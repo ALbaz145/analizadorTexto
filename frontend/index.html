@@ -1,41 +1,56 @@
 <!doctype html>
 <html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Analizador de Texto</title>
-  <link rel="stylesheet" href="./style.css" />
-</head>
-<body>
-  <main class="container">
-    <header class="header">
-      <h1>Analizador de Texto</h1>
-      <p>Envío de tareas a workers y actualización por SSE.</p>
-      <p id="clock"></p>
-    </header>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Analizador de Texto</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
 
-    <section class="panel">
-      <h2>Nueva tarea</h2>
-      <textarea id="text" rows="8" placeholder="Escribir o pegar texto..."></textarea>
-      <div class="row">
-        <button id="btnSend">Analizar</button>
-        <span id="msg" class="muted"></span>
-      </div>
-    </section>
+  <body>
+    <div class="page">
+      <header class="topbar">
+        <div class="topbar__left">
+          <h1 class="title">Analizador de Texto</h1>
+          <p class="subtitle">Envío de tareas a workers y actualización por SSE.</p>
+        </div>
 
-    <section class="grid">
-      <div class="panel">
-        <h2>Workers</h2>
-        <div id="workers" class="list"></div>
-      </div>
+        <div class="topbar__right">
+          <div class="pill">
+            <div class="pill__label">Hora</div>
+            <div id="clock" class="pill__value">--:--:--</div>
+          </div>
+        </div>
+      </header>
 
-      <div class="panel">
-        <h2>Tareas</h2>
-        <div id="tasks" class="list"></div>
-      </div>
-    </section>
-  </main>
+      <main class="layout">
+        <section class="card card--full">
+          <h2 class="h2">Nueva tarea</h2>
+          <textarea id="text" class="textarea" rows="7" placeholder="Escribir o pegar texto..."></textarea>
 
-  <script src="./app.js"></script>
-</body>
+          <div class="actions">
+            <button id="btnSend" class="btn btn--primary" type="button">Analizar</button>
+            <span id="msg" class="msg" aria-live="polite"></span>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Workers</h2>
+          <div id="workers" class="stack"></div>
+        </section>
+
+        <section class="card">
+          <div class="card__head">
+            <div>
+              <h2 class="h2">Tareas</h2>
+              <p class="muted">Se muestran de la más reciente a la más antigua.</p>
+            </div>
+          </div>
+          <div id="tasks" class="stack"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js" defer></script>
+  </body>
 </html>
