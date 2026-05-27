@@ -3,7 +3,7 @@ import os
 import re
 import time
 from collections import Counter
-from datetime import datetime
+from datetime import datetime, timezone
 import redis
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://redis:6379")
@@ -26,6 +26,9 @@ STOPWORDS = {
     "somos","soy","su","sus","también","tener","tengo","ti","tiene","tienen","toda","todas","todavia","todavía","todo","todos",
     "tras","tu","tú","tus","un","una","unas","uno","unos","usted","ustedes","va","vamos","van","varias","varios","voy","yo"
 }
+
+def utc_now_iso() -> str:
+    return datetime.now(timezone.utc).isoformat()
 
 def analyze_text(text: str) -> dict:
     words = re.findall(r'\b[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+\b', text.lower())
@@ -91,10 +94,10 @@ def update_task(task_id: str, status: str, result=None, error=None):
     data = json.loads(raw)
     data["status"] = status
     data["worker_id"] = WORKER_ID
-    data["updated_at"] = datetime.utcnow().isoformat()
-    if result:
+    data["updated_at"] = utc_now_iso()
+    if result is not None:
         data["result"] = result
-    if error:
+    if error is not None:
         data["error"] = error
     r.set(f"task:{task_id}", json.dumps(data))
 
@@ -103,7 +106,7 @@ def heartbeat(status = "idle", task_id=None):
         "worker_id": WORKER_ID,
         "status": status,
         "task_id": task_id,
-        "last_seen": datetime.utcnow().isoformat(),
+        "last_seen": utc_now_iso(),
     }
     r.setex(f"worker:{WORKER_ID}", 10, json.dumps(payload))
 
@@ -122,7 +125,7 @@ while True:
     text = task["text"]
     print(f"[{WORKER_ID}] Tomando tarea {task_id}...")
     heartbeat("busy", task_id)
-    update_task(task_id, "en progreso")
+    update_task(task_id, "en proceso")
     try:
         time.sleep(2)
         analysis = analyze_text(text)
